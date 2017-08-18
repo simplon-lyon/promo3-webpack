@@ -11,11 +11,29 @@ fichier js)
 - output: le ou les fichiers qui vont être générés par 
 webpack
 */
+const webpack = require('webpack');
+
 module.exports = {
-    entry: './index.js',
+    entry: {
+        "exemple-ajax":'./scripts/exemple-ajax.js',
+        index: './index.js',
+        vendor: [
+            'jquery'
+        ]
+    },
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: '[name].bundle.js'
     },
+    /* On rajoute un plugin intégré par défaut à webpack
+    qui permettra d'utiliser un des bundle comme fichier
+    vendor commun pour les autres bundles. Ici, notre
+    vendor contiendra les libraries communes à nos autres
+    bundle (juste jquery) */
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor'
+        })
+    ],
     devtool:'inline-source-map'
 };
